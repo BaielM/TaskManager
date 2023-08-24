@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.taskmanager.R
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.example.taskmanager.databinding.FragmentTaskBinding
-
+import com.example.taskmanager.model.Task
+import java.util.Date
 
 class TaskFragment : Fragment() {
     private lateinit var binding: FragmentTaskBinding
@@ -21,7 +24,23 @@ class TaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTaskBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnSave.setOnClickListener {
+            val data = Task(
+                title = binding.etTitle.text.toString(),
+                description = binding.etDesc.text.toString()
+
+            )
+            setFragmentResult(REQUEST_RESULT, bundleOf(TASK_KEY to data))
+            findNavController().navigateUp()
+        }
+    }
+    companion object{
+        const val REQUEST_RESULT="request.result"
+        const val TASK_KEY = "task.key"
     }
 }
