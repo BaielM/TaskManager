@@ -1,5 +1,7 @@
 package com.example.taskmanager.ui.home
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,11 +19,17 @@ import com.example.taskmanager.ui.task.TaskFragment
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private val adapter = TaskAdapter()
+    private lateinit var adapter : TaskAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = TaskAdapter(this::onLongClick)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,18 +42,40 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setData()
+
         binding.recycleView.adapter = adapter
-
-        val tasks = App.db.taskDao().getAll()
-        adapter.addTasks(tasks)
-
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_taskFragment)
         }
+    }
+
+    private fun setData() {
+        val tasks = App.db.taskDao().getAll()
+        adapter.addTasks(tasks)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun onLongClick(task: Task) {
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.setTitle("Do you want to delete?")
+        alertDialog.setNegativeButton("No", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                dialog?.cancel()
+            }
+        })
+        alertDialog.setPositiveButton("Yes", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                App.db.taskDao().delete(task)
+                setData()
+            }
+        })
+        alertDialog.create().show()
+    }
+
 }
