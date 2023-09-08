@@ -10,11 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.taskmanager.R
 import com.example.taskmanager.databinding.FragmentHomeBinding
 import com.example.taskmanager.model.Task
+import com.example.taskmanager.ui.home.adapter.TaskAdapter
 import com.example.taskmanager.ui.task.TaskFragment
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    private val adapter = TaskAdapter()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,8 +33,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recycleView.adapter = adapter
         setFragmentResultListener(TaskFragment.REQUEST_RESULT, { requestKey, bundle ->
             val data = bundle.getSerializable(TaskFragment.TASK_KEY) as Task
+            adapter.addTask(data)
         })
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.navigation_taskFragment)

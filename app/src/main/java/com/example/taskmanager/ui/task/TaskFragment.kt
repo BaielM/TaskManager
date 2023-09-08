@@ -14,6 +14,7 @@ import java.util.Date
 
 class TaskFragment : Fragment() {
     private lateinit var binding: FragmentTaskBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
