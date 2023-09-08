@@ -8,5 +8,6 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
     val title: String? = null,
-    val description: String? = null
+    val description: String? = null,
+    val isSuccess: Boolean = false,
 ): java.io.Serializable

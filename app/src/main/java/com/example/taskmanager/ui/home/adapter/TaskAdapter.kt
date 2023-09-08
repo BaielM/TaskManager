@@ -1,5 +1,6 @@
 package com.example.taskmanager.ui.home.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -7,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.taskmanager.databinding.ItemTaskBinding
 import com.example.taskmanager.model.Task
 
-class TaskAdapter(private val onLongClick: (Task) -> Unit) : Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val onLongClick: (Task) -> Unit,private val onSuccess: (Task) -> Unit) : Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val list = arrayListOf<Task>()
 
@@ -44,6 +45,19 @@ class TaskAdapter(private val onLongClick: (Task) -> Unit) : Adapter<TaskAdapter
         fun bind(task: Task) {
             binding.tvTitle.text = task.title
             binding.tvDesc.text = task.description
+            binding.checkbox.isChecked = task.isSuccess
+            if (task.isSuccess){
+                binding.tvTitle.paintFlags = binding.tvTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG
+                binding.tvDesc.paintFlags = binding.tvDesc.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG
+            }else{
+                binding.tvTitle.paintFlags = binding.tvTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.tvDesc.paintFlags = binding.tvDesc.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+
+            }
+
+            binding.checkbox.setOnCheckedChangeListener { _, isSuccess ->
+                onSuccess(task.copy(isSuccess = isSuccess))
+            }
 
             itemView.setOnLongClickListener {
                 onLongClick(task)

@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = TaskAdapter(this::onLongClick)
+        adapter = TaskAdapter(this::onLongClick, this::onSuccess)
 
     }
 
@@ -58,6 +58,11 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun onSuccess(task: Task){
+        App.db.taskDao().update(task)
+        setData()
     }
 
     private fun onLongClick(task: Task) {

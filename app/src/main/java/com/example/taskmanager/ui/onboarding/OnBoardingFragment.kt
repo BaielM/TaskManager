@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieAnimationView
 import com.example.taskmanager.data.local.Pref
 import com.example.taskmanager.databinding.FragmentOnBoardingBinding
 import com.example.taskmanager.ui.onboarding.adapter.OnBoardingAdapter
@@ -14,6 +15,7 @@ import com.example.taskmanager.ui.onboarding.adapter.OnBoardingAdapter
 class OnBoardingFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardingBinding
+    private lateinit var animationView: LottieAnimationView
     private lateinit var pref: Pref
 
     override fun onCreateView(
@@ -34,6 +36,7 @@ class OnBoardingFragment : Fragment() {
 
     private fun onCLick() {
         pref.onBoardingShow()
+        animationView.playAnimation()
         findNavController().navigateUp()
     }
 
@@ -41,3 +44,4 @@ class OnBoardingFragment : Fragment() {
         binding.viewPager.currentItem = 2
     }
 }
+
