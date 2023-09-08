@@ -1,6 +1,5 @@
 package com.example.taskmanager.ui.onboarding
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +12,9 @@ import com.example.taskmanager.ui.onboarding.adapter.OnBoardingAdapter
 
 
 class OnBoardingFragment : Fragment() {
+
     private lateinit var binding: FragmentOnBoardingBinding
-    private val adapter = OnBoardingAdapter(this::onCLick, this::onSkip)
-    private val pref:Pref by lazy {
-        Pref(requireContext())
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var pref: Pref
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +26,8 @@ class OnBoardingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pref = Pref(requireContext())
+        val adapter = OnBoardingAdapter(this::onCLick, this::onSkip)
         binding.viewPager.adapter = adapter
         binding.indicator.setViewPager(binding.viewPager)
     }
@@ -43,7 +37,7 @@ class OnBoardingFragment : Fragment() {
         findNavController().navigateUp()
     }
 
-    private fun onSkip(){
+    private fun onSkip() {
         binding.viewPager.currentItem = 2
     }
 }

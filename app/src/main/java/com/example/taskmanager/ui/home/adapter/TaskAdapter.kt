@@ -9,10 +9,17 @@ import com.example.taskmanager.model.Task
 
 class TaskAdapter : Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private val list: ArrayList<Task> = arrayListOf()
+    private val list = arrayListOf<Task>()
+
     fun addTask(task: Task){
-        list.add(0, task)
+        list.add(0,task)
         notifyItemChanged(0)
+    }
+
+    fun addTasks(list: List<Task>){
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

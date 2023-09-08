@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val pref: Pref by lazy{
+    private val pref: Pref by lazy {
         Pref(this)
     }
 
@@ -32,8 +32,9 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.navigation_onBoarding)
 
 
-        if(!pref.isShowed())
+        if (!pref.isShowed())
             navController.navigate(R.id.navigation_onBoarding)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
